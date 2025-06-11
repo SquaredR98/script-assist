@@ -3,9 +3,15 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { BullModule } from '@nestjs/bullmq';
 import { OverdueTasksService } from './overdue-tasks.service';
 import { TasksModule } from '../../modules/tasks/tasks.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Task } from '../../modules/tasks/entities/task.entity';
 
 @Module({
   imports: [
+    /**
+     * Fix Added here. The dependency for Task Repository missing.
+     */
+    TypeOrmModule.forFeature([Task]),
     ScheduleModule.forRoot(),
     BullModule.registerQueue({
       name: 'task-processing',
